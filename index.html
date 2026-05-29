@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator WR MLBB Modern - Jelly</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #141318 0%, #232228 100%);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(26, 25, 31, 0.95);
+            padding: 40px 30px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffcc00;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-subtitle {
+            color: #a0a0a0;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #cdcdcd;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: #232228;
+            border: 1px solid #3a393f;
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ffcc00;
+            box-shadow: 0 0 8px rgba(255, 204, 0, 0.2);
+            background-color: #2a2930;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #c68a0c 0%, #ffcc00 100%);
+            border: none;
+            color: #1a191f;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(198, 138, 12, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 204, 0, 0.4);
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #232228;
+            border-radius: 8px;
+            border-left: 4px solid #ffcc00;
+            text-align: left;
+            display: none;
+        }
+
+        .result-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #a0a0a0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .result-item {
+            margin-bottom: 8px;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .win-count { color: #4caf50; font-weight: 600; }
+        .lose-count { color: #f44336; font-weight: 600; }
+        
+        .target-box {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .target-count { color: #ffcc00; font-weight: 700; }
+
+        /* Gaya CSS Footer Profil Baru di Bawah */
+        .profile-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed rgba(255, 255, 204, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .avatar-box {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #ffcc00;
+            margin-bottom: 10px;
+            background-color: #232228;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+        }
+
+        .profile-footer h1 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .profile-footer p {
+            font-size: 12px;
+            color: #a0a0a0;
+            margin-top: 4px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-title">MLBB WR Calculator</div>
+    <div class="header-subtitle">Analisis total win, lose, dan target winstreak akun Anda</div>
+    
+    <div class="form-group">
+        <label>Total Match Saat Ini</label>
+        <input type="number" id="totalMatch" placeholder="Contoh: 259">
+    </div>
+    
+    <div class="form-group">
+        <label>Total Win Rate Saat Ini (%)</label>
+        <input type="number" step="0.1" id="currentWr" placeholder="Contoh: 76.4">
+    </div>
+    
+    <div class="form-group">
+        <label>Target Win Rate (%) (Opsional)</label>
+        <input type="number" step="0.1" id="targetWr" placeholder="Contoh: 80">
+    </div>
+    
+    <button onclick="hitungSemuanya()">Hitung Analisis</button>
+    
+    <div class="result-box" id="hasilBox">
+        <div class="result-title">Hasil Analisis Akun</div>
+        <div class="result-item">
+            <span>Jumlah Kemenangan (Win):</span>
+            <span class="win-count" id="resWin">0 Match</span>
+        </div>
+        <div class="result-item">
+            <span>Jumlah Kekalahan (Lose):</span>
+            <span class="lose-count" id="resLose">0 Match</span>
+        </div>
+        <div class="target-box" id="resTargetBox" style="display: none;"></div>
+    </div>
+
+    <div class="profile-footer">
+        <div class="avatar-box">🐱</div>
+        <h1>JELLY</h1>
+        <p>Your MLBB Account Analyst</p>
+    </div>
+</div>
+
+<script>
+function hitungSemuanya() {
+    const tMatch = parseInt(document.getElementById('totalMatch').value);
+    const cWr = parseFloat(document.getElementById('currentWr').value);
+    const tWr = parseFloat(document.getElementById('targetWr').value);
+    
+    const hasilBox = document.getElementById('hasilBox');
+    const resWin = document.getElementById('resWin');
+    const resLose = document.getElementById('resLose');
+    const resTargetBox = document.getElementById('resTargetBox');
+
+    if (!tMatch || isNaN(cWr)) {
+        alert("Mohon isi kolom Total Match dan Win Rate saat ini.");
+        return;
+    }
+
+    if (cWr > 100 || cWr < 0) {
+        alert("Win Rate harus berada di antara 0% sampai 100%.");
+        return;
+    }
+
+    const totalWin = Math.round((cWr / 100) * tMatch);
+    const totalLose = tMatch - totalWin;
+
+    resWin.innerText = totalWin + " Match";
+    resLose.innerText = totalLose + " Match";
+
+    if (!isNaN(tWr) && tWr > 0) {
+        if (tWr >= 100 || tWr <= cWr) {
+            resTargetBox.innerHTML = "<span style='color: #f44336;'>Target WR harus lebih tinggi dari WR sekarang dan di bawah 100%.</span>";
+            resTargetBox.style.display = "block";
+        } else {
+            const totalWinSelesai = (tWr * tMatch - 100 * totalWin) / (100 - tWr);
+            const totalWinDibutuhkan = Math.ceil(totalWinSelesai);
+            resTargetBox.innerHTML = "Untuk mencapai Win Rate <span class='target-count'>" + tWr + "%</span>, Anda memerlukan sekitar <span class='target-count'>" + totalWinDibutuhkan + " Win beruntun</span> tanpa lose.";
+            resTargetBox.style.display = "block";
+        }
+    } else {
+        resTargetBox.style.display = "none";
+    }
+
+    hasilBox.style.display = "block";
+}
+</script>
+
+</body>
+</html>
